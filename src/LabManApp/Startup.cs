@@ -35,7 +35,7 @@ namespace LabManApp
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-
+            
             services.AddMvc();
         }
 
@@ -44,7 +44,7 @@ namespace LabManApp
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             //app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -61,12 +61,12 @@ namespace LabManApp
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+            /*app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            });*/
         }
     }
 }
