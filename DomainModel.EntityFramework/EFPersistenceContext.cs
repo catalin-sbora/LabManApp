@@ -6,6 +6,7 @@ using DomainModel.Interfaces;
 using DomainModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using MySQL.Data.Entity.Extensions;
 
 namespace DomainModel.EntityFramework
 {
@@ -79,8 +80,27 @@ namespace DomainModel.EntityFramework
         public bool InitializeContext(IConfigurationRoot configuration)
         {
             string connectionString = configuration.GetConnectionString("LabManDbContext");
+            var configs = configuration.AsEnumerable();
+            bool useMySql = false;
+            foreach (KeyValuePair<string, string> config in configs)
+            {
+                if (config.Key.Equals("UseMySql") && config.Value.Equals("Yes"))
+                {
+                    useMySql = true;
+                }
+            }
             var optionsBuilder = new DbContextOptionsBuilder();
-            optionsBuilder.UseSqlServer(connectionString);
+            if (useMySql)
+            {
+                connectionString = configuration.GetConnectionString("LabManDbContextMysql");
+                optionsBuilder.UseMySQL(connectionString);
+            }
+            else
+            {
+                optionsBuilder.UseSqlServer(connectionString);
+            }
+            
+            
             dbContext = new LabManDBContext(optionsBuilder.Options);
             
             if (dbContext.Database.EnsureCreated())
