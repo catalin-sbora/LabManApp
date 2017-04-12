@@ -23,7 +23,7 @@
     <script src="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" type="text/javascript"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
     <script src="lib/jquery.bootgrid/jquery.bootgrid.js"></script>
-    
+    <script src="lib/jquery.bootgrid/jquery.bootgrid.fa.js"></script>
 
     <script type="text/javascript">
 
@@ -33,15 +33,15 @@
                     method: "GET",
                     cache: false
                 },
-                url: "students.json",
+                url: "http://localhost:61889/api/students",
                 ajax: true,
                 responseHandler: function (response) {
                     var retObject = {};
                     retObject.current = 1;
                     retObject.rowCount = response.length;
                     retObject.rows = response;
-                    retObject.total = response.length;
-                    return retObject;
+
+                    return response;
                 }
             });
     </script>
