@@ -26,9 +26,7 @@ namespace LabManAPI.Controllers
         // GET: api/students
         [HttpGet]
         public IEnumerable<Student> Get()
-        {
-            //gradesRepository.GetAll();
-            
+        {         
             return studentsRepository.GetAll();
         }
 

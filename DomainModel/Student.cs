@@ -10,8 +10,7 @@ namespace DomainModel
     {
         public String FirstName { get; set; }
         public String LastName { get; set; }
-        public Int32 GroupId { get; set; } 
-        [JsonIgnore]       
+        public Int32 GroupId { get; set; }            
         public virtual Group Group { get; set; }
         [JsonIgnore]
         public virtual ICollection<Grade> Grades { get; set; } 

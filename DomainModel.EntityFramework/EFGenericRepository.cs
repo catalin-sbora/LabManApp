@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DomainModel.Interfaces;
 using DomainModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace DomainModel.EntityFramework
 {
@@ -12,6 +13,7 @@ namespace DomainModel.EntityFramework
     {
         protected readonly LabManDBContext dbContext = null;
         protected readonly DbSet<T> dbSet = null;
+        protected List<String> dependenciesToLoadList = null; 
 
         public EFGenericRepository(LabManDBContext dbContext)
         {
@@ -28,7 +30,15 @@ namespace DomainModel.EntityFramework
 
         public IEnumerable<T> GetAll()
         {
-            return dbSet.ToList();
+            IQueryable<T> result = dbSet;
+            if (dependenciesToLoadList != null)
+            {
+                foreach (String dependency in dependenciesToLoadList)
+                {
+                    result = result.Include(dependency);
+                }
+            }                  
+            return result.ToList();
         }
 
         public T GetById(int id)

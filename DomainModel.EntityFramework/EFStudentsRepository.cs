@@ -12,26 +12,29 @@ namespace DomainModel.EntityFramework
     {
         public EFStudentsRepository(LabManDBContext dbContext) : base(dbContext)
         {
+            base.dependenciesToLoadList = new List<string> {"Group", "Grades"};
         }
 
         public ICollection<Student> GetStudentsByFirstName(string firstName)
         {
             
-            return dbSet
-                .Include(s => s.Grades)
+            return dbSet                
+                .Include(s => s.Group)
                 .Where(s => s.FirstName.CompareTo(firstName) == 0).ToList();
         }
 
         public ICollection<Student> GetStudentsByGroupId(int groupId)
         {
-            return dbSet
-                .Include(s => s.Grades)
+            return dbSet                
+                .Include(s => s.Group)
                 .Where(s => s.GroupId == groupId).ToList();
         }
 
         public ICollection<Student> GetStudentsByLastName(string lastName)
         {
-            return dbSet.Where(s => s.LastName.CompareTo(lastName) == 0).ToList();
+            return dbSet
+                .Include(s => s.Group)
+                .Where(s => s.LastName.CompareTo(lastName) == 0).ToList();
         }
     }
 }

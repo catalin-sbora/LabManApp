@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DomainModel
 {
     public class Grade:UniqueObject
-    {        
+    {   [JsonIgnore]     
         public Int32 StudentId { get; set; } 
         [JsonIgnore]
         public virtual Student Student { get; set; }               
