@@ -14,6 +14,7 @@ using DomainServices.DefaultImplementation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+
 namespace LabManAPI
 {
     public class Startup
@@ -33,6 +34,7 @@ namespace LabManAPI
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+            
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -40,25 +42,42 @@ namespace LabManAPI
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             // Add framework services.
+           /* services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin",
+                    builder => builder.AllowAnyOrigin());
+            });*/
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddScoped<IPersistenceContext>(provider => { return new EFPersistenceContext(Configuration); });
             services.AddScoped<ILabManDataAggregationService>(provider => { return new LabManDataAggregationService(services.First(s => s.ServiceType.Equals(typeof(IPersistenceContext))).ImplementationInstance as IPersistenceContext); });
-            services.AddMvc();/*.AddJsonOptions(options => {                
+            services.AddMvc();
+            
+            /*.AddJsonOptions(options => {                
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });*/
         }
-
+        private static void HandleBranch(IApplicationBuilder app)
+        {
+            app.Run(async context =>
+            {
+                context.Response.StatusCode = 200;               
+                await context.Response.Body.FlushAsync();
+                //context.Response.OnCompleted((object, Task) => { return null; });
+            });
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.MapWhen(context => context.Request.Method.Equals("OPTIONS"), HandleBranch);
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             //app.UseApplicationInsightsRequestTelemetry();
 
-           // app.UseApplicationInsightsExceptionTelemetry();
+            // app.UseApplicationInsightsExceptionTelemetry();
+           // app.UseCors("AllowAnyOrigin");
 
             app.UseMvc();
         }

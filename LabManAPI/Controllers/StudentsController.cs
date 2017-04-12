@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using DomainModel.Interfaces;
 using DomainServices.Interfaces;
 using DomainModel;
+using Microsoft.AspNetCore.Cors;
+using System.Net;
+
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace LabManAPI.Controllers
-{
-    [Route("api/[controller]")]
+{    
+    [Route("api/[controller]")]   
     public class StudentsController : Controller
     {
         private readonly IPersistenceContext persistenceContext;
@@ -19,6 +22,7 @@ namespace LabManAPI.Controllers
 
         public StudentsController(IPersistenceContext context, ILabManDataAggregationService labManAgregationService)
         {
+           
             persistenceContext = context;
             dataAggregationService = labManAgregationService;
             studentsRepository = persistenceContext.GetStudentsRepository();           
@@ -39,18 +43,20 @@ namespace LabManAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Student value)
+        public JsonResult Post([FromBody]Student value)
         {
             studentsRepository.Add(value);
             persistenceContext.SaveAll();
+            return Json(value);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Student value)
+        public JsonResult Put(int id, [FromBody]Student value)
         {
             studentsRepository.Update(value);
             persistenceContext.SaveAll();
+            return Json(value);
         }
 
         // DELETE api/values/5
@@ -59,6 +65,12 @@ namespace LabManAPI.Controllers
         {
             studentsRepository.Remove(new Student { Id = id });
             persistenceContext.SaveAll();
+        }
+        [HttpOptions]
+        public void Options()
+        {
+            Response.StatusCode = 200;
+                        
         }
     }
 }

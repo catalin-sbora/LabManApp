@@ -5,45 +5,45 @@
     <title>Lab Management Tool</title>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.css"/>
-    <link rel="stylesheet" href="lib/jquery.bootgrid/jquery.bootgrid.css"/>    
+    <link rel="stylesheet" href="lib/jsgrid/jsgrid.css"/> 
+    <link rel="stylesheet" href="lib/jsgrid/jsgrid-theme.css"/>    
 </head>
 <body>
-
-    <table id="grid-data" class="table table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th data-column-id="firstName">First Name</th>
-                <th data-column-id="lastName">Last Name</th>
-                <th data-column-id="group.name">Group</th>                
-            </tr>
-        </thead>
-    </table>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div id="studentsGrid"></div>
+        </div>
+    </div>
     <script src="lib/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="lib/jquery-cookie/jquery.cookie.js" type="text/javascript"></script>
     <script src="lib/jquery-validation/dist/jquery.validate.js" type="text/javascript"></script>
     <script src="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" type="text/javascript"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
-    <script src="lib/jquery.bootgrid/jquery.bootgrid.js"></script>
-    
+    <script src="lib/jsgrid/jsgrid.js" type="text/javascript"></script>
+    <script src="js/labManAppAPI.js" type="text/javascript"></script>
+    <script src="js/studentsGridController.js" type="text/javascript"></script>
 
     <script type="text/javascript">
 
-        $("#grid-data").bootgrid(
+        $("#studentsGrid").jsGrid(
             {
-                ajaxSettings: {
-                    method: "GET",
-                    cache: false
-                },
-                url: "http://localhost:61889/api/students",
-                ajax: true,
-                responseHandler: function (response) {
-                    var retObject = {};
-                    retObject.current = 1;
-                    retObject.rowCount = response.length;
-                    retObject.rows = response;
-                    retObject.total = response.length;
-                    return retObject;
-                }
-            });
+                width: "100%",
+                height: "500px",
+                inserting: true,
+                editing: true,
+                sorting: true,
+                paging: true,
+                autoload: true,
+                controller: studentsGridController,
+                fields: [
+                    { name: "firstName", title: "First Name", type: "text", width: 200 },
+                    { name: "lastName", title: "Last Name", type: "text", width: 200 },
+                    { name: "group.name", title: "Group", type: "text", width: 200 },
+                    { type: "control" }
+                ]
+            }
+        );
+           
     </script>
 
 </body>
