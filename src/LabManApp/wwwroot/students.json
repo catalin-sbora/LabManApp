@@ -1,0 +1,57 @@
+﻿[
+  {
+    "firstName": "Maria",
+    "lastName": "Popescu",
+    "groupId": 1,
+    "group": {
+      "name": "CR3H1A",
+      "year": 3,
+      "id": 1
+    },
+    "id": 1
+  },
+  {
+    "firstName": "George",
+    "lastName": "Iacob",
+    "groupId": 1,
+    "group": {
+      "name": "CR3H1A",
+      "year": 3,
+      "id": 1
+    },
+    "id": 2
+  },
+  {
+    "firstName": "Alexandru",
+    "lastName": "Ispas",
+    "groupId": 2,
+    "group": {
+      "name": "CR3S1A",
+      "year": 3,
+      "id": 2
+    },
+    "id": 3
+  },
+  {
+    "firstName": "Nicolae",
+    "lastName": "Grigoras",
+    "groupId": 2,
+    "group": {
+      "name": "CR3S1A",
+      "year": 3,
+      "id": 2
+    },
+    "id": 4
+  },
+  {
+    "firstName": "Robert",
+    "lastName": "Nita",
+    "groupId": 2,
+    "group": {
+      "name": "CR3S1A",
+      "year": 3,
+      "id": 2
+    },
+    "id": 5
+  }
+]
